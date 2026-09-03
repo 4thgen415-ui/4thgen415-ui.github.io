@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /app-api/
+Disallow: /deckapi/
+
+Sitemap: https://blaine.chat/sitemap.xml
