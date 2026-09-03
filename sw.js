@@ -1,6 +1,6 @@
 // Bump CACHE_NAME whenever the caching logic changes: old clients detect the
 // new worker on their next navigation, purge stale caches, and reload.
-const CACHE_NAME = 'bbm-browser-logo-v1';
+const CACHE_NAME = 'blaine-web-runtime-v2';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
