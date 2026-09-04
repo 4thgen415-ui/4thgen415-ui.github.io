@@ -1,0 +1,6 @@
+import{c as t,e as s,r,j as e,B as a}from"./index-BEDTyyO4.js";import{E as i}from"./external-link-DSaxfrKI.js";/**
+ * @license lucide-react v0.545.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const o=[["rect",{width:"18",height:"18",x:"3",y:"3",rx:"2",ry:"2",key:"1m3agn"}],["circle",{cx:"9",cy:"9",r:"2",key:"af1f0g"}],["path",{d:"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21",key:"1xmnt7"}]],n=t("image",o);function p(){s("Photos");const[l,c]=r.useState(!1);return e.jsx(a,{title:"Photos",children:e.jsxs("div",{className:"auth-center",children:[e.jsxs("div",{className:"panel",style:{width:"100%",maxWidth:320},children:[e.jsx(n,{size:24,style:{color:"var(--graphite)",marginBottom:8}}),e.jsx("div",{className:"panel-title",children:"Photo editor not configured"}),e.jsxs("p",{className:"prose-muted",children:["The BitMappery photo editor requires a self-hosted deployment. Set"," ",e.jsx("code",{style:{fontSize:11,background:"var(--raise)",padding:"2px 4px",borderRadius:4},children:"VITE_PHOTOS_URL"})," ","in your frontend environment to enable it."]})]}),e.jsxs("a",{href:"https://github.com/igorski/bitmappery",target:"_blank",rel:"noopener noreferrer",className:"auth-links",children:[e.jsx(i,{size:11})," BitMappery on GitHub"]})]})})}export{p as default};
