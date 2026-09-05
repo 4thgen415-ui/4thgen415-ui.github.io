@@ -1,0 +1,6 @@
+import{c as s,e as t,r as i,j as e,B as r}from"./index-DKojxnhx.js";import{E as n}from"./external-link-CjyK-EcP.js";/**
+ * @license lucide-react v0.545.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const a=[["path",{d:"m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5",key:"ftymec"}],["rect",{x:"2",y:"6",width:"14",height:"12",rx:"2",key:"158x01"}]],o=s("video",a);function m(){t("Videos");const[l,d]=i.useState(!1);return e.jsx(r,{title:"Videos",children:e.jsxs("div",{className:"auth-center",children:[e.jsxs("div",{className:"panel",style:{width:"100%",maxWidth:320},children:[e.jsx(o,{size:24,style:{color:"var(--graphite)",marginBottom:8}}),e.jsx("div",{className:"panel-title",children:"Video editor not configured"}),e.jsxs("p",{className:"prose-muted",children:["The OmniClip video editor requires a self-hosted deployment. Set"," ",e.jsx("code",{style:{fontSize:11,background:"var(--raise)",padding:"2px 4px",borderRadius:4},children:"VITE_VIDEOS_URL"})," ","in your frontend environment to enable it."]})]}),e.jsxs("a",{href:"https://github.com/openages/omniclip",target:"_blank",rel:"noopener noreferrer",className:"auth-links",children:[e.jsx(n,{size:11})," OmniClip on GitHub"]})]})})}export{m as default};
