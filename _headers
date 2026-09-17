@@ -1,0 +1,16 @@
+# Cloudflare Pages response headers (copied into dist/ by Vite).
+# Do not add a 404.html — Pages then treats this as an SPA and serves
+# index.html for client routes such as /sign-in and /chat.
+# Source: https://developers.cloudflare.com/pages/configuration/headers/
+
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex
