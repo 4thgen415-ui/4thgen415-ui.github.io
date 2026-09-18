@@ -58,10 +58,131 @@
     <meta property="og:image:width" content="2560" />
     <meta property="og:image:height" content="1440" />
     <meta name="twitter:image" content="https://blaine.chat/brand/og-image.png" />
-    <script type="module" crossorigin src="/assets/index-DoWy9r0a.js"></script>
+    <script type="module" crossorigin src="/assets/index-C5mpMfWG.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-Jr-q6Ds8.css">
   </head>
   <body>
+    <!--
+      Original boot flash. Art + timing from 2348edf
+      frontend/src/components/chat/ChatSplash.tsx (first live bundle
+      4thgen415-ui.github.io ec89cda5). Markup/handoff from
+      docs/prototype.html (e84a08a). CSS from 0413015
+      frontend/src/index.css .startup-splash-host. Inline so it types
+      before the app bundle finishes loading. Not ChatSplash.
+    -->
+    <style>
+      #startupSplashHost {
+        --paper: #FFFFFF;
+        --proof: #1B37BE;
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        pointer-events: none;
+      }
+      #startupSplashHost .splash {
+        position: absolute;
+        inset: 0;
+        z-index: 60;
+        display: grid;
+        place-items: center;
+        background: var(--paper);
+        cursor: pointer;
+        pointer-events: auto;
+        transition: opacity 0.5s ease, visibility 0.5s;
+      }
+      #startupSplashHost .splash.gone {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      #startupSplashHost .splash pre {
+        margin: 0;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: clamp(8px, 3.15vw, 14px);
+        line-height: 1.35;
+        font-weight: 700;
+        color: #131313;
+        white-space: pre;
+        letter-spacing: 0;
+      }
+      #startupSplashHost .splash .cur {
+        display: inline-block;
+        width: 0.62em;
+        height: 1.05em;
+        background: var(--proof);
+        vertical-align: -0.18em;
+        animation: chat-sblink 0.62s steps(2) infinite;
+      }
+      @keyframes chat-sblink {
+        50% { opacity: 0; }
+      }
+    </style>
+    <div class="startup-splash-host" id="startupSplashHost">
+      <div class="splash" id="splash" role="img" aria-label="Blaine">
+        <div>
+          <pre id="splashArt"></pre>
+        </div>
+      </div>
+    </div>
     <div id="root"></div>
+    <script>
+      (function () {
+        var A1 = '|__| .       |,          />       .';
+        var A2 = '|  | |   ,   | /\\/\\     /> |_ /-\\ | |\\| [-';
+        var el = document.getElementById('splashArt');
+        var box = document.getElementById('splash');
+        var host = document.getElementById('startupSplashHost');
+        if (!el || !box) return;
+        var cols = Math.max(A1.length, A2.length);
+        var i = 0;
+        var timer;
+        var finished = false;
+        function paint(n, cursor) {
+          el.textContent = '';
+          el.appendChild(document.createTextNode(A1.slice(0, n) + '\n'));
+          el.appendChild(document.createTextNode(A2.slice(0, n)));
+          if (cursor) {
+            var c = document.createElement('span');
+            c.className = 'cur';
+            el.appendChild(c);
+          }
+        }
+        function drop() {
+          box.classList.add('gone');
+          setTimeout(function () {
+            if (host && host.parentNode) host.parentNode.removeChild(host);
+          }, 500);
+        }
+        function finish() {
+          if (finished) return;
+          finished = true;
+          if (timer) clearInterval(timer);
+          paint(cols, false);
+          setTimeout(drop, 1000);
+        }
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          paint(cols, false);
+          setTimeout(finish, 300);
+        } else {
+          paint(0, true);
+          var tick = Math.max(16, Math.round(1000 / cols));
+          timer = setInterval(function () {
+            i += 1;
+            if (i >= cols) {
+              paint(cols, false);
+              finish();
+              return;
+            }
+            paint(i, true);
+          }, tick);
+        }
+        box.addEventListener('pointerdown', function () {
+          if (finished) return;
+          finished = true;
+          if (timer) clearInterval(timer);
+          drop();
+        });
+      })();
+    </script>
   </body>
 </html>
