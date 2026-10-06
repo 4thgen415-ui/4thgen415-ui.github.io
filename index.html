@@ -58,14 +58,14 @@
     <meta property="og:image:width" content="2560" />
     <meta property="og:image:height" content="1440" />
     <meta name="twitter:image" content="https://blaine.chat/brand/og-image.png" />
-    <script type="module" crossorigin src="/assets/index-DcpDmbt_.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/BlaineShell-CIhr1psd.js">
-    <link rel="modulepreload" crossorigin href="/assets/dist-B3ENeh97.js">
-    <link rel="modulepreload" crossorigin href="/assets/auth-BA3EMF_N.js">
-    <link rel="modulepreload" crossorigin href="/assets/Skeleton-BxXo8EjI.js">
-    <link rel="modulepreload" crossorigin href="/assets/engineApi-jvyj_8dZ.js">
+    <script type="module" crossorigin src="/assets/index-CzZ6dXH3.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/BlaineShell-C9Mq2Oc7.js">
+    <link rel="modulepreload" crossorigin href="/assets/auth-DbHsBLyf.js">
+    <link rel="modulepreload" crossorigin href="/assets/Skeleton-BYLFyFgt.js">
+    <link rel="modulepreload" crossorigin href="/assets/engineApi-BgyAUtwg.js">
     <link rel="modulepreload" crossorigin href="/assets/preload-helper-DjMZykf2.js">
-    <link rel="stylesheet" crossorigin href="/assets/BlaineShell-BsNabtVN.css">
+    <link rel="modulepreload" crossorigin href="/assets/dist-B3ENeh97.js">
+    <link rel="stylesheet" crossorigin href="/assets/BlaineShell-DoRSZ00Z.css">
     <link rel="stylesheet" crossorigin href="/assets/index-CDoHEUdw.css">
   </head>
   <body>
@@ -98,6 +98,19 @@
         var i = 0;
         var timer;
         var finished = false;
+        var marked = false;
+        function splashApi() {
+          var h = location.hostname;
+          if (h === 'blaine.chat' || h === 'www.blaine.chat') return 'https://api.blaine.chat/api/splash';
+          return '/api/splash';
+        }
+        function cookieSeen() {
+          try {
+            return /(?:^|;\\s*)blaine_splash_seen=1(?:;|$)/.test(document.cookie || '');
+          } catch (e) {
+            return false;
+          }
+        }
         function paint(n, cursor) {
           el.textContent = '';
           el.appendChild(document.createTextNode(A1.slice(0, n) + '\n'));
@@ -119,35 +132,77 @@
             if (host.parentNode) host.parentNode.removeChild(host);
           }
         }
+        function markSeen() {
+          if (marked) return;
+          marked = true;
+          try {
+            fetch(splashApi(), { method: 'POST', credentials: 'include', keepalive: true }).catch(function () {});
+          } catch (e) {}
+        }
         function finish() {
           if (finished) return;
           finished = true;
           if (timer) clearInterval(timer);
           paint(cols, false);
+          markSeen();
           setTimeout(drop, 1000);
         }
-        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          paint(cols, false);
-          setTimeout(finish, 300);
-        } else {
-          paint(0, true);
-          var tick = Math.max(16, Math.round(1000 / cols));
-          timer = setInterval(function () {
-            i += 1;
-            if (i >= cols) {
-              paint(cols, false);
-              finish();
-              return;
-            }
-            paint(i, true);
-          }, tick);
+        function play() {
+          if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            paint(cols, false);
+            setTimeout(finish, 300);
+          } else {
+            paint(0, true);
+            var tick = Math.max(16, Math.round(1000 / cols));
+            timer = setInterval(function () {
+              i += 1;
+              if (i >= cols) {
+                paint(cols, false);
+                finish();
+                return;
+              }
+              paint(i, true);
+            }, tick);
+          }
+          box.addEventListener('pointerdown', function () {
+            if (finished) return;
+            finished = true;
+            if (timer) clearInterval(timer);
+            markSeen();
+            drop();
+          });
         }
-        box.addEventListener('pointerdown', function () {
-          if (finished) return;
-          finished = true;
-          if (timer) clearInterval(timer);
+        // Once per IP: cookie is a fast path; API is the source of truth.
+        if (cookieSeen()) {
           drop();
-        });
+          return;
+        }
+        var decided = false;
+        var gate = setTimeout(function () {
+          if (decided) return;
+          decided = true;
+          play();
+        }, 900);
+        try {
+          fetch(splashApi(), { method: 'GET', credentials: 'include' })
+            .then(function (r) { return r.ok ? r.json() : { seen: false }; })
+            .then(function (data) {
+              if (decided) return;
+              decided = true;
+              clearTimeout(gate);
+              if (data && data.seen) drop();
+              else play();
+            })
+            .catch(function () {
+              if (decided) return;
+              decided = true;
+              clearTimeout(gate);
+              play();
+            });
+        } catch (e) {
+          clearTimeout(gate);
+          play();
+        }
       })();
     </script>
   </body>
