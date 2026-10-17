@@ -1,0 +1,11 @@
+var o="## What Blaine learned";function m(e){const s=e.indexOf(o);return s===-1?[e,""]:[e.slice(0,s),e.slice(s+22)]}function f(e,s){return`${e.trimEnd()}${e.trim()?`
+
+`:""}${o}${s}`}function g(e,s,t){const[r,n]=m(e);if(s==="notes")return(t+(n?`
+
+${o}${n}`:"")).trim()+`
+`;const c=n.split(`
+`),u=Number(s.slice(1));return c[u]=`- ${t}${(c[u]??"").match(/ \(source: [^)]*\)$/)?.[0]??""}`,f(r,c.join(`
+`))}function S(e,s){const[t,r]=m(e);if(s==="notes")return r?`${o}${r}`:"";const n=r.split(`
+`);return n.splice(Number(s.slice(1)),1),f(t,n.join(`
+`))}var i={memory:"blaine.settings.memory.v1",skills:"blaine.settings.skills.v1",schedules:"blaine.settings.schedules.v1"},h=6e3;function l(e,s){try{const t=globalThis.localStorage?.getItem(e);return t?JSON.parse(t):s}catch{return s}}function a(e,s){globalThis.localStorage?.setItem(e,JSON.stringify(s))}function y(e){const s=e.indexOf(o),t=s===-1?e:e.slice(0,s),r=s===-1?"":e.slice(s+o.length),n=[];return t.trim()&&n.push({id:"notes",text:t.trim(),source:"you"}),r.split(`
+`).forEach((c,u)=>{const d=c.match(/^\s*-\s+(.*?)(?: \(source: ([^)]*)\))?\s*$/);d&&d[1]&&n.push({id:`l${u}`,text:d[1],source:d[2]||"learned"})}),n}var $={async memoryFacts(){const e=l(i.memory,"");return{facts:y(e),content:e,budget_chars:h}},async putMemory(e){if(e.length>6e3)throw new Error("Memory is over the size limit.");return a(i.memory,e),{content:e,budget_chars:h}},async listSkills(){return l(i.skills,[])},async putSkill(e,s){const t=e.trim();if(!t)throw new Error("Give the skill a name.");const r=l(i.skills,[]).filter(c=>c.name!==t),n={name:t,content:s};return a(i.skills,[...r,n]),n},async deleteSkill(e){a(i.skills,l(i.skills,[]).filter(s=>s.name!==e))},async listSchedules(){return l(i.schedules,[])},async createSchedule(e){const s={id:`s_${Date.now().toString(36)}${Math.random().toString(36).slice(2,6)}`,budget_credits:0,enabled:!0,last_run_at:null,next_run_at:null,created_at:new Date().toISOString(),...e};return a(i.schedules,[...l(i.schedules,[]),s]),s},async patchSchedule(e,s){const t=l(i.schedules,[]),r=t.findIndex(n=>n.id===e);if(r<0)throw new Error("Schedule not found.");return t[r]={...t[r],...s},a(i.schedules,t),t[r]},async deleteSchedule(e){a(i.schedules,l(i.schedules,[]).filter(s=>s.id!==e))}};export{g as n,S as r,$ as t};
